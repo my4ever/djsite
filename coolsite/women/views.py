@@ -1,15 +1,26 @@
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.http import HttpResponse, HttpResponseNotFound
 from django.core.handlers.wsgi import WSGIRequest
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
+
+from .models import *
+
+
+
+menu = ['О сайте', 'Добавить статью', 'Обратная связь', 'Войти',]
 
 
 def index(request: WSGIRequest) -> HttpResponse:
-    return HttpResponse("index")
+    posts = Women.objects.all()
+    content = {'posts': posts, 'menu': menu, 'title': 'Главная страница'}
+    return render(request, 'women/index.html', content)
+
+
+def about(request: WSGIRequest) -> render:
+    content = {'menu': menu, 'title': 'О сайте'}
+    return render(request, 'women/about.html', content)
 
 
 def categories(request: WSGIRequest, cat_id: str) -> HttpResponse:
-    user = {'first name': request.GET['first'],
-                   'last name': request.GET['last']}
     return HttpResponse(f"Categories - {cat_id}")
 
 
