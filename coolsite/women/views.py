@@ -34,14 +34,12 @@ def contact(request):
 
 
 def add_page(request):
-    form = AddPostForm(request.POST or None)
+    form = AddPostForm(request.POST, request.FILES)
     if request.method == 'POST':
         if form.is_valid():
-            try:
-                Women.objects.create(**form.cleaned_data)
-                return redirect('index')
-            except:
-                form.add_error(None, 'Ошибка добавления записи')
+            form.save()
+            return redirect('index')
+    form = AddPostForm()
     context = {
         'form': form,
         'menu': menu,
